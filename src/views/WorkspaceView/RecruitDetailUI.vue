@@ -3,7 +3,7 @@ import { onMounted, ref } from "vue";
 import TitleBorder from "../../components/TitleBorder.vue";
 import DialogModal from "../../components/DialogModal.vue";
 import ToastMsg from "../../components/ToastMsg.vue";
-import { baseEndpoint, successRecruit } from "../../stores";
+import { baseEndpoint, successRecruit, officer } from "../../stores";
 import router from "../../router";
 import SelectCustom from "../../components/SelectCustom.vue";
 import OptionCustom from "../../components/OptionCustom.vue";
@@ -13,6 +13,11 @@ import dayjs from "dayjs";
 document.title = "Recruitment Detail - Hireflash";
 
 const isLoaded = ref(false);
+
+const onlyHR = ref(officer.value.position.includes("hr"));
+const onlyHRandManager =
+  ref(officer.value.position.includes("hr")) &&
+  ref(officer.value.position.includes("manager"));
 
 onMounted(async () => {
   const jobId = router.currentRoute.value.params.jobId;
@@ -385,18 +390,21 @@ function cancelModelDelete() {
         </div>
         <div class="mt-6 flex gap-2 max-md:flex-col">
           <router-link
+            v-show="onlyHR"
             v-bind:to="`/workspace/recruitment/` + jobRecruit.id + `/edit`"
             class="rounded-md bg-indigo-800 text-gray-50 px-4 py-2 transition ease-in-out focus:scale-95 hover:-translate-y-1 grid place-items-center"
           >
             <p>Edit</p>
           </router-link>
           <button
+            v-show="onlyHR"
             class="rounded-md bg-gray-50 border-2 border-indigo-800 text-indigo-800 px-4 py-2 transition ease-in-out focus:scale-95 hover:-translate-y-1"
             v-on:click="toggleModelDelete()"
           >
             Delete
           </button>
           <button
+            v-show="onlyHRandManager"
             class="rounded-md bg-gray-50 border-2 border-indigo-800 text-indigo-800 px-4 py-2 transition ease-in-out focus:scale-95 hover:-translate-y-1"
             v-on:click="toggleFormStatus()"
           >

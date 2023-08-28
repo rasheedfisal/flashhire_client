@@ -6,7 +6,7 @@ import router from "../../router";
 import { company, user, baseEndpoint } from "../../stores";
 import Loading from "../../components/Loading.vue";
 import { getFullRole } from "../../lib/Auth";
-
+import ToastMsg from "../../components/ToastMsg.vue";
 document.title = "Workspace - Hireflash";
 
 const isLoaded = ref(false);
@@ -78,13 +78,31 @@ const officerList = ref([]);
 const unreadInbox = ref([]);
 
 const isOpenInfo = ref(false);
+const showToastMsg = ref(false);
+const toastMsg = ref("");
+function toggleToastMsg(msgForToast) {
+  toastMsg.value = msgForToast;
+  showToastMsg.value = true;
 
+  setTimeout(() => {
+    showToastMsg.value = false;
+    toastMsg.value = "";
+  }, 3000);
+}
 function toggleModelInfo() {
   isOpenInfo.value = !isOpenInfo.value;
+}
+
+function copyLinkJob(jobid) {
+  navigator.clipboard.writeText(
+    `${import.meta.env.VITE_FRONTEND_ENDPOINT}/job/${jobid}`
+  );
+  toggleToastMsg("Link copied!");
 }
 </script>
 
 <template>
+  <ToastMsg v-bind:msg="toastMsg" v-show="showToastMsg" />
   <!-- <main class="bg-indigo-50 w-full min-h-screen">
         <section class="flex">
             <div class="min-w-fit">
@@ -194,10 +212,16 @@ function toggleModelInfo() {
                   {{ recruit.last_modified_date }}
                 </p>
               </div>
-              <div
-                class="bg-indigo-800 py-1 px-4 rounded-md text-gray-50 text-sm max-md:px-2 max-md:text-xs"
-              >
-                Advertised
+              <div class="flex justify-end gap-3">
+                <button v-on:click="copyLinkJob(recruit.id)">
+                  <i class="bi bi-clipboard text-lg"></i>
+                </button>
+
+                <div
+                  class="bg-indigo-800 py-1 px-4 rounded-md text-gray-50 text-sm max-md:px-2 max-md:text-xs"
+                >
+                  {{ recruit.recruitment_status }}
+                </div>
               </div>
             </div>
           </template>
