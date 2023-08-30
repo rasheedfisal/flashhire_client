@@ -120,6 +120,7 @@ async function applyJob(job_id) {
     toggleModalApply();
     toggleToastMsg("You have successfully apply this job!");
   }
+  router.go();
 }
 
 function copyLinkJob() {
@@ -145,10 +146,11 @@ async function addToWishlist(job_id) {
 
   const res = await response.json();
 
-  if (response.status !== 201) {
+  if (response.status !== 200) {
     toggleToastMsg("Failed to add to Wishlist. Please try again.");
   } else {
     toggleToastMsg("Successfully added to Wishlist");
+    router.go();
   }
 }
 
