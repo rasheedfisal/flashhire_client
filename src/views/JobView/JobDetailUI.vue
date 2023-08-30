@@ -18,13 +18,21 @@ import dayjs from "dayjs";
 document.title = "Job Detail - Hireflash";
 
 const showNavApplicant = ref(false);
+const notes = ref("");
+const isOpenNotes = ref(false);
 
 onBeforeMount(() => {
   showNavApplicant.value = isAuthenticated.value;
 });
 
 const isLoaded = ref(false);
-
+function toggleModelNotes() {
+  isOpenNotes.value = !isOpenNotes.value;
+}
+function cancelToggleModelNotes() {
+  isOpenNotes.value = !isOpenNotes.value;
+  notes.value = "";
+}
 onMounted(async () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -81,7 +89,7 @@ async function applyJob(job_id) {
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
     body: JSON.stringify({
-      notes: "",
+      notes: notes.value,
       is_only_wish: false,
       candidate_profile_id: candidate_profile.value.id,
       job_id: job_id,
@@ -132,8 +140,8 @@ function copyLinkJob() {
 
 async function addToWishlist(job_id) {
   // change
-  const response = await fetch(baseEndpoint + "/applicant/wishlist", {
-    method: "PUT",
+  const response = await fetch(baseEndpoint + "/applicant", {
+    method: "POST",
     mode: "cors",
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
@@ -141,12 +149,13 @@ async function addToWishlist(job_id) {
       is_only_wish: true,
       candidate_profile_id: candidate_profile.value.id,
       job_id: job_id,
+      notes: notes.value,
     }),
   });
 
   const res = await response.json();
 
-  if (response.status !== 200) {
+  if (response.status !== 201) {
     toggleToastMsg("Failed to add to Wishlist. Please try again.");
   } else {
     toggleToastMsg("Successfully added to Wishlist");
@@ -199,6 +208,17 @@ watchEffect(async () => {
     }
   }
 });
+
+const textareaElm = ref(null);
+
+function textareaResize() {
+  textareaElm.value.style.height = "5rem";
+  if (parseInt(textareaElm.value.scrollHeight) < 500) {
+    textareaElm.value.style.height = textareaElm.value.scrollHeight + "px";
+  } else {
+    textareaElm.value.style.height = "500px";
+  }
+}
 </script>
 
 <template>
@@ -342,10 +362,17 @@ watchEffect(async () => {
               </button>
               <button
                 class="rounded-md bg-gray-50 border-2 border-indigo-800 text-indigo-800 px-4 py-2 transition ease-in-out focus:scale-95 hover:-translate-y-1"
+                v-on:click="toggleModelNotes()"
+              >
+                Add Cover Letter
+              </button>
+              <button
+                class="rounded-md bg-gray-50 border-2 border-indigo-800 text-indigo-800 px-4 py-2 transition ease-in-out focus:scale-95 hover:-translate-y-1"
                 v-on:click="copyLinkJob()"
               >
                 Copy Link
               </button>
+
               <button
                 class="rounded-md bg-gray-50 border-2 border-indigo-800 text-indigo-800 px-4 py-2 transition ease-in-out focus:scale-95 hover:-translate-y-1"
                 v-on:click="addToWishlist(job.id)"
@@ -404,6 +431,45 @@ watchEffect(async () => {
           </div>
         </div>
       </section>
+      <!-- for adding notes -->
+      <DialogModal
+        v-on:toggle="toggleModelNotes()"
+        v-show="isOpenNotes"
+        modaltype="small"
+      >
+        <section class="block w-[40vw] max-md:w-[80vw]">
+          <label class="mb-2 block">Cover Letter</label>
+          <textarea
+            class="block w-full rounded-md border-2 border-gray-300 px-4 py-2 bg-gray-50 resize-y h-20 hover:outline-none focus:outline-none focus:border-indigo-400 placeholder:text-gray-300"
+            placeholder="why are you the best candidate for this job..."
+            v-model="notes"
+            ref="textareaElm"
+            v-on:input="textareaResize()"
+          ></textarea>
+          <div class="mt-4">
+            <div class="mt-6 flex gap-2">
+              <button
+                class="rounded-md bg-indigo-800 text-gray-50 px-4 py-2 transition ease-in-out focus:scale-95 hover:-translate-y-1"
+                v-on:click="toggleModelNotes()"
+                type="button"
+                v-bind:disabled="notes === ''"
+                v-bind:class="{
+                  'disabled:cursor-not-allowed opacity-60': notes === '',
+                }"
+              >
+                Save
+              </button>
+              <button
+                class="rounded-md bg-gray-50 border-2 border-indigo8 text-indigo-800 px-4 py-2 transition ease-in-out focus:scale-95 hover:-translate-y-1"
+                v-on:click="cancelToggleModelNotes()"
+                type="button"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </section>
+      </DialogModal>
       <DialogModal
         v-on:toggle="toggleModalApply()"
         v-show="isOpenApply"

@@ -121,7 +121,7 @@ function copyLinkJob(jobid) {
         <div
           class="border-2 border-indigo-200 rounded-md w-32 h-32 bg-gray-50 max-md:w-20 max-md:h-20"
         >
-          <img v-bind:src="company.pic" alt="" class="w-full h-auto" />
+          <img v-bind:src="company.pic" alt="" class="w-full h-full" />
         </div>
         <div>
           <h4 class="font-semibold text-xl max-md:text-lg">

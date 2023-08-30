@@ -90,7 +90,7 @@ async function addToInterviewList() {
     }
   );
   const res = await response.json();
-  if (response.status !== 201) {
+  if (response.status !== 200) {
     toggleToastMsg(
       "Failed to add the candidate to interview list. Please try again."
     );
