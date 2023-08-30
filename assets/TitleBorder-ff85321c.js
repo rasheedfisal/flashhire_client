@@ -1,0 +1,1 @@
+import{o as s,c as o,b as t,H as r,F as a}from"./index-52d34a77.js";const l={class:"text-lg font-semibold"},c=t("p",{class:"w-10 border-b-2 border-black mt-1 mb-2"},null,-1),m={__name:"TitleBorder",props:{title:String},setup(e){return(n,i)=>(s(),o(a,null,[t("h3",l,r(e.title),1),c],64))}};export{m as _};
