@@ -1,0 +1,1 @@
+import{r as n,o as l,c as r,n as t}from"./index-52d34a77.js";const u={__name:"Loading",props:{color:String},setup(s){const e=s,o=n(!1),a=n(!1);return e.color==="white"?o.value=!0:e.color==="indigo"&&(a.value=!0),(i,c)=>(l(),r("span",{class:t({"loader-white":o.value,"loader-indigo":a.value})},null,2))}};export{u as _};
