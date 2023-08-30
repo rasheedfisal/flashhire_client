@@ -130,13 +130,13 @@ function copyLinkJob() {
 }
 
 async function addToWishlist(job_id) {
-  const response = await fetch(baseEndpoint + "/applicant", {
-    method: "POST",
+  // change
+  const response = await fetch(baseEndpoint + "/applicant/wishlist", {
+    method: "PUT",
     mode: "cors",
     headers: { "Content-Type": "application/json" },
     credentials: "same-origin",
     body: JSON.stringify({
-      notes: "",
       is_only_wish: true,
       candidate_profile_id: candidate_profile.value.id,
       job_id: job_id,
@@ -428,7 +428,7 @@ watchEffect(async () => {
         </div>
       </DialogModal>
     </template>
-    <div class="h-full w-full grid place-items-center" v-else>
+    <div class="min-h-screen w-full flex justify-center items-center" v-else>
       <Loading color="indigo" />
     </div>
     <br /><br /><br />
