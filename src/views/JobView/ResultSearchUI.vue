@@ -177,9 +177,9 @@ async function addToWishlist(job_id) {
   }
 }
 
-function handleSearch() {
-  router.push(`/job/result?q=${jobQuery.value}`).then(() => router.go());
-}
+// function handleSearch() {
+//   router.push(`/job/result?q=${jobQuery.value}`).then(() => router.go());
+// }
 
 const wishlist = ref([]);
 
@@ -215,6 +215,7 @@ watchEffect(async () => {
     <section class="max-w-7xl mx-auto px-4">
       <form
         class="bg-gray-50 p-6 rounded-md shadow-lg w-full mt-12 max-md:mt-8"
+        action="/job/result"
       >
         <h1 class="text-center text-3xl font-bold mb-4">Get your dream job</h1>
         <div class="flex gap-2 max-w-xl mx-auto">
@@ -227,8 +228,7 @@ watchEffect(async () => {
           />
           <button
             class="flex justify-center items-center rounded-md bg-indigo-800 text-gray-50 px-4 py-2 w-36 gap-2 max-md:w-16 transition ease-in-out focus:scale-95 hover:-translate-y-1"
-            type="button"
-            v-on:click="handleSearch()"
+            type="submit"
           >
             <p class="max-md:hidden">Search</p>
             <i class="bi bi-search"></i>

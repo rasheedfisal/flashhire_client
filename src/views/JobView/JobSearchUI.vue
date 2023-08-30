@@ -45,9 +45,9 @@ function firstTimeClick() {
   jobSearch.value = jobAdvertise.value;
   router.push("/job/search");
 }
-function handleSearch() {
-  router.push(`/job/result?q=${jobSearch.value}`).then(() => router.go());
-}
+// function handleSearch() {
+//   router.push(`/job/result?q=${jobSearch.value}`).then(() => router.go());
+// }
 </script>
 
 <template>
@@ -55,8 +55,9 @@ function handleSearch() {
     <NavApplicant v-bind:shownav="showNavApplicant" />
     <NavPublic v-bind:shownav="!showNavApplicant" />
     <section class="w-full grid place-items-center" style="height: 75vh">
-      <div
+      <form
         class="w-1/2 max-sm:w-[95vw] max-md:w-[85vw] max-lg:w-[75vw] max-md:p-4"
+        action="/job/result"
       >
         <div class="bg-gray-50 rounded-md shadow-lg p-6">
           <h1 class="text-center text-3xl font-bold mb-4">
@@ -73,8 +74,7 @@ function handleSearch() {
             />
             <button
               class="flex justify-center items-center rounded-md bg-indigo-800 text-gray-50 px-4 py-2 w-36 gap-2 max-md:w-16 transition ease-in-out focus:scale-95 hover:-translate-y-1"
-              type="button"
-              v-on:click="handleSearch()"
+              type="submit"
             >
               <p class="max-md:hidden">Search</p>
               <i class="bi bi-search"></i>
@@ -137,7 +137,7 @@ function handleSearch() {
                         </select>
                     </div>
                 </div> -->
-      </div>
+      </form>
     </section>
   </main>
 </template>
